@@ -14,10 +14,17 @@ class Sonos {
   private:
     IPAddress _ip;
     EthernetClient _client;
-    void debugResponse(EthernetClient client);
-    void pauseHttpMessage(EthernetClient client);
-    void playHttpMessage(EthernetClient client);
-    void playURIHttpMessage(EthernetClient client, char *uri);
+    void clientPWrite(const prog_char *data);
+    void clientPWriteLn(const prog_char *data);
+    void clientWrite(const char *data);
+    void clientWriteLn(const char *data);
+    void clientWriteLn();
+    void clientWriteLn(IPAddress ip);
+    void clientWriteLn(long number);
+    void debugResponse();
+    void pauseHttpMessage();
+    void playHttpMessage();
+    void playURIHttpMessage(char *uri);
 };
 
 #endif
