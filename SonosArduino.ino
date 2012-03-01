@@ -29,10 +29,24 @@ const byte stopPin = 7;
 Button *buttons[noOfButtons];
 Button *stopButton;
 
+byte greenLedPin = 8;
+byte redLedPin = 9;
+
+void redLedOn();
+void redLedOff();
+void greenLedOn();
+void greenLedOff();
+
 void setup() {
   Serial.begin(9600);
-  debugMemory();
   Serial.println("setup()");
+  debugMemory();
+  
+  // Setup LEDs
+  pinMode(greenLedPin, OUTPUT);
+  pinMode(redLedPin, OUTPUT);
+  
+  redLedOn();
   
   // Initalise buttons
   for(int _b=0; _b<noOfButtons; _b++) {
@@ -45,19 +59,27 @@ void setup() {
   
   // Initalise ethernet
   if (Ethernet.begin(macAddress) == 0) {
-    // do failure code
+    while(1) {
+       redLedOn();
+       delay(500);
+       redLedOff();
+       delay(500);
+    }
   }
   Serial.println(Ethernet.localIP());
   
   // Initalise Sonos
   sonos = new Sonos(sonosIP);
   debugMemory();
+  
+  redLedOff();
 }
 
 
 void loop() {
   Button::Event _stopEvent = stopButton->getEvent();
   if (_stopEvent != Button::None) {
+    redLedOn();
     Serial.print(millis());
     Serial.print(" ");
     switch(_stopEvent) {
@@ -75,12 +97,17 @@ void loop() {
     }
     Serial.flush();
     debugMemory();
+    redLedOff();
+    greenLedOn();
+    delay(500);
+    greenLedOff();
   }
   
   for(int _b=0; _b<noOfButtons; _b++) {
     Button *_button = buttons[_b];
     Button::Event _event = _button->getEvent();
     if (_event != Button::None) {
+      redLedOn();
       Serial.print(millis());
       Serial.print(" ");
       switch(_event) {
@@ -98,6 +125,26 @@ void loop() {
       }
       Serial.flush();
       debugMemory();
+      redLedOff();
+      greenLedOn();
+      delay(500);
+      greenLedOff();
     }
   }
+}
+
+void redLedOn() {
+  digitalWrite(redLedPin, HIGH);
+}
+
+void redLedOff() {
+  digitalWrite(redLedPin, LOW);
+}
+
+void greenLedOn() {
+  digitalWrite(greenLedPin, HIGH);
+}
+
+void greenLedOff() {
+  digitalWrite(greenLedPin, LOW);
 }
