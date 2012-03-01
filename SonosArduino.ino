@@ -5,32 +5,38 @@
 #include "Sonos.h"
 #include "MemoryFree.h"
 
+// Single click streams
 char *singleClickStreams[] = {
   "http://www.bbc.co.uk/radio/listen/live/r4.asx", 
   "http://bbc.co.uk/radio/listen/live/r5l.asx", 
   "http://www.bbc.co.uk/worldservice/meta/tx/nb/live/eneuk.asx", 
-  "http://twit.am/listen"
+  "http://www.bbc.co.uk/radio/listen/live/r4.asx"
 };
 
+// Long click streams
 char *longClickStreams[] = {
   "http://www.bbc.co.uk/radio/listen/live/r4x.asx", 
   "http://bbc.co.uk/radio/listen/live/r5lsp.asx", 
-  "http://www.bbc.co.uk/radio/listen/live/r4x.asx", 
-  "http://twit.am/listen.m3u" 
+  "http://www.bbc.co.uk/radio/listen/live/r4.asx", 
+  "http://www.bbc.co.uk/radio/listen/live/r4.asx" 
 };
 
+// Your Arduino MAC address
 byte macAddress[] = { 0x90, 0xA2, 0xDA, 0x00, 0x69, 0x1C };
-const IPAddress sonosIP = IPAddress(192, 168, 0, 216);
-Sonos *sonos;
 
+// The IP address of your Sonos box
+const IPAddress sonosIP = IPAddress(192, 168, 0, 216);
+
+// Pin assignments
 const unsigned int noOfButtons = 4;
 const byte buttonPins[] = { 2, 3, 5, 6 };
 const byte stopPin = 7;
-Button *buttons[noOfButtons];
-Button *stopButton;
-
 byte greenLedPin = 8;
 byte redLedPin = 9;
+
+Sonos *sonos;
+Button *buttons[noOfButtons];
+Button *stopButton;
 
 void redLedOn();
 void redLedOff();
